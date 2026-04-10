@@ -1,0 +1,88 @@
+[ 2026-04-10 21:06:22,463 ] 15 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-10 21:06:22,463 ] 41 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-10 21:06:22,464 ] 9 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-10 21:06:22,464 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-10 21:06:22,465 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-10 21:06:22,465 ] 11 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-10 21:06:22,467 ] 20 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-10 21:06:40,471 ] 29 src.pipeline.chat_pipeline - INFO - Received question: what is number of total patient
+[ 2026-04-10 21:06:42,858 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT COUNT(id)
+FROM patients;
+```
+[ 2026-04-10 21:06:42,859 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT COUNT(id)
+FROM patients;
+[ 2026-04-10 21:06:42,860 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-10 21:06:42,860 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-10 21:06:42,861 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT COUNT(id)
+FROM patients;
+[ 2026-04-10 21:06:42,864 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-10 21:06:42,868 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-10 21:07:06,850 ] 29 src.pipeline.chat_pipeline - INFO - Received question: give me chart
+[ 2026-04-10 21:07:11,083 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  d.specialization,
+  COUNT(a.id) AS total_appointments
+FROM appointments AS a
+JOIN doctors AS d
+  ON a.doctor_id = d.id
+GROUP BY
+  d.specialization
+ORDER BY
+  total_appointments DESC;
+```
+[ 2026-04-10 21:07:11,084 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  d.specialization,
+  COUNT(a.id) AS total_appointments
+FROM appointments AS a
+JOIN doctors AS d
+  ON a.doctor_id = d.id
+GROUP BY
+  d.specialization
+ORDER BY
+  total_appointments DESC;
+[ 2026-04-10 21:07:11,084 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-10 21:07:11,085 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-10 21:07:11,085 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  d.specialization,
+  COUNT(a.id) AS total_appointments
+FROM appointments AS a
+JOIN doctors AS d
+  ON a.doctor_id = d.id
+GROUP BY
+  d.specialization
+ORDER BY
+  total_appointments DESC;
+[ 2026-04-10 21:07:11,087 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 5 rows.
+[ 2026-04-10 21:07:47,990 ] 29 src.pipeline.chat_pipeline - INFO - Received question: tell me what tables do you have
+[ 2026-04-10 21:07:49,372 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT name FROM sqlite_master WHERE type='table';
+```
+[ 2026-04-10 21:07:49,373 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT name FROM sqlite_master WHERE type='table';
+[ 2026-04-10 21:07:49,373 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-10 21:07:49,373 ] 45 src.components.sql_validator - WARNING - Validation failed: Access to system tables is not allowed. | Query: SELECT name FROM sqlite_master WHERE type='table';
+[ 2026-04-10 21:07:49,374 ] 62 src.pipeline.chat_pipeline - ERROR - Custom Error: Access to system tables is not allowed.
+[ 2026-04-10 21:07:59,351 ] 29 src.pipeline.chat_pipeline - INFO - Received question: can you delete the data
+[ 2026-04-10 21:07:59,777 ] 71 src.pipeline.chat_pipeline - ERROR - Unexpected Pipeline Error: 429 You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 20, model: gemini-2.5-flash
+Please retry in 1.082187831s. [links {
+  description: "Learn more about Gemini API quotas"
+  url: "https://ai.google.dev/gemini-api/docs/rate-limits"
+}
+, violations {
+  quota_metric: "generativelanguage.googleapis.com/generate_content_free_tier_requests"
+  quota_id: "GenerateRequestsPerDayPerProjectPerModel-FreeTier"
+  quota_dimensions {
+    key: "model"
+    value: "gemini-2.5-flash"
+  }
+  quota_dimensions {
+    key: "location"
+    value: "global"
+  }
+  quota_value: 20
+}
+, retry_delay {
+  seconds: 1
+}
+]

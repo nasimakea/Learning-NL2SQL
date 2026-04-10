@@ -1,0 +1,18 @@
+[ 2026-04-10 20:02:48,634 ] 14 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-10 20:02:48,635 ] 41 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-10 20:02:48,635 ] 9 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-10 20:02:48,636 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-10 20:02:48,636 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-10 20:02:48,638 ] 18 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-10 20:02:48,640 ] 27 src.pipeline.chat_pipeline - INFO - Received question: How many patients do we have?
+[ 2026-04-10 20:02:50,587 ] 31 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT COUNT(id)
+FROM patients;
+```
+[ 2026-04-10 20:02:50,588 ] 38 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT COUNT(id)
+FROM patients;
+[ 2026-04-10 20:02:50,589 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-10 20:02:50,592 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-10 20:02:50,593 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT COUNT(id)
+FROM patients;
+[ 2026-04-10 20:02:50,595 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
