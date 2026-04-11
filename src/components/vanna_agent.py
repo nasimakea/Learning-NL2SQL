@@ -13,9 +13,10 @@ class SimpleSQLAgent:
     def ask(self, question: str):
         schema = """
         Tables:
-        patients(id, first_name, last_name, age, gender)
-        appointments(id, patient_id, doctor_id, date)
-        doctors(id, name, specialization)
+        patients(id, first_name, last_name, email, phone, date_of_birth, gender, city, registered_date)
+
+        appointments(id, patient_id, doctor_id, appointment_date, status, notes)
+        doctors(id, name, specialization, department, phone)
         """
 
         prompt = f"""
