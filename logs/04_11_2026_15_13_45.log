@@ -1,0 +1,572 @@
+[ 2026-04-11 15:13:51,095 ] 15 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-11 15:13:51,096 ] 42 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-11 15:13:51,096 ] 9 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-11 15:13:51,098 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-11 15:13:51,099 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-11 15:13:51,099 ] 11 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-11 15:13:51,100 ] 20 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-11 15:14:12,894 ] 29 src.pipeline.chat_pipeline - INFO - Received question: how many patient do we have
+[ 2026-04-11 15:14:14,574 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  COUNT(id)
+FROM patients;
+```
+[ 2026-04-11 15:14:14,575 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  COUNT(id)
+FROM patients;
+[ 2026-04-11 15:14:14,576 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:14:14,578 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:14:14,578 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  COUNT(id)
+FROM patients;
+[ 2026-04-11 15:14:14,583 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 15:14:14,592 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:14:48,617 ] 29 src.pipeline.chat_pipeline - INFO - Received question: list all doctor and their specilization
+[ 2026-04-11 15:14:50,024 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT name, specialization
+FROM doctors;
+```
+[ 2026-04-11 15:14:50,025 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT name, specialization
+FROM doctors;
+[ 2026-04-11 15:14:50,026 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:14:50,026 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:14:50,026 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT name, specialization
+FROM doctors;
+[ 2026-04-11 15:14:50,028 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 15 rows.
+[ 2026-04-11 15:14:50,101 ] 38 src.components.chart_generator - ERROR - Chart generation failed: no numeric data to plot
+[ 2026-04-11 15:15:19,376 ] 29 src.pipeline.chat_pipeline - INFO - Received question: show me appointments for the last months
+[ 2026-04-11 15:15:21,127 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT *
+FROM appointments
+WHERE appointment_date >= DATE('now', '-1 month');
+```
+[ 2026-04-11 15:15:21,127 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT *
+FROM appointments
+WHERE appointment_date >= DATE('now', '-1 month');
+[ 2026-04-11 15:15:21,128 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:15:21,128 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:15:21,129 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT *
+FROM appointments
+WHERE appointment_date >= DATE('now', '-1 month');
+[ 2026-04-11 15:15:21,132 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 39 rows.
+[ 2026-04-11 15:15:21,134 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:15:50,049 ] 29 src.pipeline.chat_pipeline - INFO - Received question: which dcotor has the most appointments
+[ 2026-04-11 15:15:51,698 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  d.name
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+GROUP BY
+  d.id
+ORDER BY
+  COUNT(a.id) DESC
+LIMIT 1;
+```
+[ 2026-04-11 15:15:51,699 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  d.name
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+GROUP BY
+  d.id
+ORDER BY
+  COUNT(a.id) DESC
+LIMIT 1;
+[ 2026-04-11 15:15:51,699 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:15:51,701 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:15:51,701 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  d.name
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+GROUP BY
+  d.id
+ORDER BY
+  COUNT(a.id) DESC
+LIMIT 1;
+[ 2026-04-11 15:15:51,704 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 15:15:51,706 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:16:27,271 ] 29 src.pipeline.chat_pipeline - INFO - Received question: what is the total revenue
+[ 2026-04-11 15:16:29,811 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+-- The provided database schema does not contain any tables or columns related to revenue, pricing, or payments.
+-- Therefore, it is not possible to calculate the total revenue with the current schema.
+-- To calculate revenue, you would typically need tables like 'payments', 'services', 'procedures', or columns like 'price' in 'appointments'.
+SELECT 'N/A' AS total_revenue
+WHERE FALSE;
+```
+[ 2026-04-11 15:16:29,812 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: -- The provided database schema does not contain any tables or columns related to revenue, pricing, or payments.
+-- Therefore, it is not possible to calculate the total revenue with the current schema.
+-- To calculate revenue, you would typically need tables like 'payments', 'services', 'procedures', or columns like 'price' in 'appointments'.
+SELECT 'N/A' AS total_revenue
+WHERE FALSE;
+[ 2026-04-11 15:16:29,812 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:16:29,813 ] 32 src.components.sql_validator - WARNING - Validation failed: Only SELECT queries are allowed. | Query: -- The provided database schema does not contain any tables or columns related to revenue, pricing, or payments.
+-- Therefore, it is not possible to calculate the total revenue with the current schema.
+-- To calculate revenue, you would typically need tables like 'payments', 'services', 'procedures', or columns like 'price' in 'appointments'.
+SELECT 'N/A' AS total_revenue
+WHERE FALSE;
+[ 2026-04-11 15:16:29,813 ] 62 src.pipeline.chat_pipeline - ERROR - Custom Error: Only SELECT queries are allowed.
+[ 2026-04-11 15:17:48,614 ] 29 src.pipeline.chat_pipeline - INFO - Received question: How many cancelled appointments last quarter?
+[ 2026-04-11 15:18:03,065 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  COUNT(id)
+FROM appointments
+WHERE
+  status = 'Cancelled' AND appointment_date BETWEEN DATE(
+    DATE(
+      'now',
+      'start of month',
+      '-' || ( (STRFTIME('%m', 'now') - 1) % 3 ) || ' months'
+    ),
+    '-3 months'
+  ) AND DATE(
+    DATE(
+      'now',
+      'start of month',
+      '-' || ( (STRFTIME('%m', 'now') - 1) % 3 ) || ' months'
+    ),
+    '-1 day'
+  );
+```
+[ 2026-04-11 15:18:03,067 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  COUNT(id)
+FROM appointments
+WHERE
+  status = 'Cancelled' AND appointment_date BETWEEN DATE(
+    DATE(
+      'now',
+      'start of month',
+      '-' || ( (STRFTIME('%m', 'now') - 1) % 3 ) || ' months'
+    ),
+    '-3 months'
+  ) AND DATE(
+    DATE(
+      'now',
+      'start of month',
+      '-' || ( (STRFTIME('%m', 'now') - 1) % 3 ) || ' months'
+    ),
+    '-1 day'
+  );
+[ 2026-04-11 15:18:03,068 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:18:03,069 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:18:03,071 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  COUNT(id)
+FROM appointments
+WHERE
+  status = 'Cancelled' AND appointment_date BETWEEN DATE(
+    DATE(
+      'now',
+      'start of month',
+      '-' || ( (STRFTIME('%m', 'now') - 1) % 3 ) || ' months'
+    ),
+    '-3 months'
+  ) AND DATE(
+    DATE(
+      'now',
+      'start of month',
+      '-' || ( (STRFTIME('%m', 'now') - 1) % 3 ) || ' months'
+    ),
+    '-1 day'
+  );
+[ 2026-04-11 15:18:03,075 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 15:18:03,078 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:18:50,927 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Top 5 patients by spending
+[ 2026-04-11 15:18:57,222 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  COUNT(a.id) AS total_appointments
+FROM patients AS p
+JOIN appointments AS a
+  ON p.id = a.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_appointments DESC
+LIMIT 5;
+```
+[ 2026-04-11 15:18:57,224 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  COUNT(a.id) AS total_appointments
+FROM patients AS p
+JOIN appointments AS a
+  ON p.id = a.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_appointments DESC
+LIMIT 5;
+[ 2026-04-11 15:18:57,225 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:18:57,225 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:18:57,226 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  COUNT(a.id) AS total_appointments
+FROM patients AS p
+JOIN appointments AS a
+  ON p.id = a.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_appointments DESC
+LIMIT 5;
+[ 2026-04-11 15:18:57,231 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 5 rows.
+[ 2026-04-11 15:18:57,248 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:20:18,019 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Average treatment cost by specialization
+[ 2026-04-11 15:20:19,994 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+-- Not possible with the given schema as there is no 'treatment_cost' information in any of the tables.
+-- The 'doctors' table has 'specialization', but no cost data can be linked to it.
+```
+[ 2026-04-11 15:20:19,995 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: -- Not possible with the given schema as there is no 'treatment_cost' information in any of the tables.
+-- The 'doctors' table has 'specialization', but no cost data can be linked to it.
+[ 2026-04-11 15:20:19,997 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:20:19,997 ] 32 src.components.sql_validator - WARNING - Validation failed: Only SELECT queries are allowed. | Query: -- Not possible with the given schema as there is no 'treatment_cost' information in any of the tables.
+-- The 'doctors' table has 'specialization', but no cost data can be linked to it.
+[ 2026-04-11 15:20:19,998 ] 62 src.pipeline.chat_pipeline - ERROR - Custom Error: Only SELECT queries are allowed.
+[ 2026-04-11 15:20:44,104 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Show monthly appointment count for the past 6 months
+[ 2026-04-11 15:20:46,327 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  strftime('%Y-%m', appointment_date) AS appointment_month,
+  COUNT(id) AS total_appointments
+FROM appointments
+WHERE
+  appointment_date >= strftime('%Y-%m-%d %H:%M:%S', date('now', '-6 months'))
+GROUP BY
+  appointment_month
+ORDER BY
+  appointment_month;
+```
+[ 2026-04-11 15:20:46,328 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  strftime('%Y-%m', appointment_date) AS appointment_month,
+  COUNT(id) AS total_appointments
+FROM appointments
+WHERE
+  appointment_date >= strftime('%Y-%m-%d %H:%M:%S', date('now', '-6 months'))
+GROUP BY
+  appointment_month
+ORDER BY
+  appointment_month;
+[ 2026-04-11 15:20:46,329 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:20:46,330 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:20:46,331 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  strftime('%Y-%m', appointment_date) AS appointment_month,
+  COUNT(id) AS total_appointments
+FROM appointments
+WHERE
+  appointment_date >= strftime('%Y-%m-%d %H:%M:%S', date('now', '-6 months'))
+GROUP BY
+  appointment_month
+ORDER BY
+  appointment_month;
+[ 2026-04-11 15:20:46,333 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 7 rows.
+[ 2026-04-11 15:21:23,472 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Which city has the most patients?
+[ 2026-04-11 15:21:24,924 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  city
+FROM patients
+GROUP BY
+  city
+ORDER BY
+  COUNT(id) DESC
+LIMIT 1;
+```
+[ 2026-04-11 15:21:24,926 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  city
+FROM patients
+GROUP BY
+  city
+ORDER BY
+  COUNT(id) DESC
+LIMIT 1;
+[ 2026-04-11 15:21:24,926 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:21:24,927 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:21:24,929 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  city
+FROM patients
+GROUP BY
+  city
+ORDER BY
+  COUNT(id) DESC
+LIMIT 1;
+[ 2026-04-11 15:21:24,931 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 15:21:24,933 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:21:50,344 ] 29 src.pipeline.chat_pipeline - INFO - Received question: List patients who visited more than 3 times
+[ 2026-04-11 15:21:52,235 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  COUNT(a.id) AS visit_count
+FROM patients AS p
+JOIN appointments AS a
+  ON p.id = a.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+HAVING
+  COUNT(a.id) > 3;
+```
+[ 2026-04-11 15:21:52,237 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  COUNT(a.id) AS visit_count
+FROM patients AS p
+JOIN appointments AS a
+  ON p.id = a.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+HAVING
+  COUNT(a.id) > 3;
+[ 2026-04-11 15:21:52,237 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:21:52,238 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:21:52,238 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  COUNT(a.id) AS visit_count
+FROM patients AS p
+JOIN appointments AS a
+  ON p.id = a.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+HAVING
+  COUNT(a.id) > 3;
+[ 2026-04-11 15:21:52,242 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 49 rows.
+[ 2026-04-11 15:21:52,245 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:22:32,984 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Show unpaid invoices
+[ 2026-04-11 15:22:49,236 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone AS patient_phone,
+  d.name AS doctor_name,
+  d.specialization,
+  a.appointment_date,
+  a.status,
+  a.notes
+FROM appointments AS a
+JOIN patients AS p
+  ON a.patient_id = p.id
+JOIN doctors AS d
+  ON a.doctor_id = d.id
+WHERE
+  a.status = 'pending_payment'; -- Assuming 'pending_payment' signifies an appointment for which an invoice has been issued and is awaiting payment.
+```
+[ 2026-04-11 15:22:49,237 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone AS patient_phone,
+  d.name AS doctor_name,
+  d.specialization,
+  a.appointment_date,
+  a.status,
+  a.notes
+FROM appointments AS a
+JOIN patients AS p
+  ON a.patient_id = p.id
+JOIN doctors AS d
+  ON a.doctor_id = d.id
+WHERE
+  a.status = 'pending_payment'; -- Assuming 'pending_payment' signifies an appointment for which an invoice has been issued and is awaiting payment.
+[ 2026-04-11 15:22:49,238 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:22:49,238 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:22:49,240 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone AS patient_phone,
+  d.name AS doctor_name,
+  d.specialization,
+  a.appointment_date,
+  a.status,
+  a.notes
+FROM appointments AS a
+JOIN patients AS p
+  ON a.patient_id = p.id
+JOIN doctors AS d
+  ON a.doctor_id = d.id
+WHERE
+  a.status = 'pending_payment'; -- Assuming 'pending_payment' signifies an appointment for which an invoice has been issued and is awaiting payment.
+[ 2026-04-11 15:22:49,242 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 0 rows.
+[ 2026-04-11 15:22:49,258 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:23:39,336 ] 29 src.pipeline.chat_pipeline - INFO - Received question: What percentage of appointments are no-shows?
+[ 2026-04-11 15:23:41,266 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  CAST(SUM(CASE WHEN status = 'no-show' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(id)
+FROM appointments;
+```
+[ 2026-04-11 15:23:41,267 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  CAST(SUM(CASE WHEN status = 'no-show' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(id)
+FROM appointments;
+[ 2026-04-11 15:23:41,268 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:23:41,268 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:23:41,269 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  CAST(SUM(CASE WHEN status = 'no-show' THEN 1 ELSE 0 END) AS REAL) * 100 / COUNT(id)
+FROM appointments;
+[ 2026-04-11 15:23:41,273 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 15:23:41,276 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 15:23:58,312 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Show the busiest day of the week for appointments
+[ 2026-04-11 15:24:00,149 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  strftime('%A', appointment_date) AS day_of_week,
+  COUNT(id) AS total_appointments
+FROM appointments
+GROUP BY
+  day_of_week
+ORDER BY
+  total_appointments DESC
+LIMIT 1;
+```
+[ 2026-04-11 15:24:00,150 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  strftime('%A', appointment_date) AS day_of_week,
+  COUNT(id) AS total_appointments
+FROM appointments
+GROUP BY
+  day_of_week
+ORDER BY
+  total_appointments DESC
+LIMIT 1;
+[ 2026-04-11 15:24:00,150 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:24:00,151 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:24:00,151 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  strftime('%A', appointment_date) AS day_of_week,
+  COUNT(id) AS total_appointments
+FROM appointments
+GROUP BY
+  day_of_week
+ORDER BY
+  total_appointments DESC
+LIMIT 1;
+[ 2026-04-11 15:24:00,155 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 15:24:36,472 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Revenue trend by month
+[ 2026-04-11 15:24:38,663 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  strftime('%Y-%m', appointment_date) AS appointment_month,
+  COUNT(id) AS number_of_appointments
+FROM appointments
+GROUP BY
+  appointment_month
+ORDER BY
+  appointment_month;
+```
+[ 2026-04-11 15:24:38,664 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  strftime('%Y-%m', appointment_date) AS appointment_month,
+  COUNT(id) AS number_of_appointments
+FROM appointments
+GROUP BY
+  appointment_month
+ORDER BY
+  appointment_month;
+[ 2026-04-11 15:24:38,664 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:24:38,665 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:24:38,666 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  strftime('%Y-%m', appointment_date) AS appointment_month,
+  COUNT(id) AS number_of_appointments
+FROM appointments
+GROUP BY
+  appointment_month
+ORDER BY
+  appointment_month;
+[ 2026-04-11 15:24:38,670 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 13 rows.
+[ 2026-04-11 15:25:00,665 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Average appointment duration by doctor
+[ 2026-04-11 15:25:02,619 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: It is not possible to calculate the average appointment duration with the current schema, as there are no columns in the `appointments` table (such as `start_time`, `end_time`, or `duration`) that provide information about the length of an appointment.
+[ 2026-04-11 15:25:29,373 ] 29 src.pipeline.chat_pipeline - INFO - Received question: List patients with overdue invoices
+[ 2026-04-11 15:25:40,070 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+-- The provided database schema (patients, appointments, doctors) does not contain any tables or columns related to invoices, payments, or their due dates.
+-- Therefore, it is not possible to identify or list patients with "overdue invoices" using the current schema.
+SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone
+FROM
+  patients AS p
+WHERE
+  1 = 0; -- This condition ensures no rows are returned, as the requested information is unavailable in the schema.
+```
+[ 2026-04-11 15:25:40,071 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: -- The provided database schema (patients, appointments, doctors) does not contain any tables or columns related to invoices, payments, or their due dates.
+-- Therefore, it is not possible to identify or list patients with "overdue invoices" using the current schema.
+SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone
+FROM
+  patients AS p
+WHERE
+  1 = 0; -- This condition ensures no rows are returned, as the requested information is unavailable in the schema.
+[ 2026-04-11 15:25:40,072 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:25:40,072 ] 32 src.components.sql_validator - WARNING - Validation failed: Only SELECT queries are allowed. | Query: -- The provided database schema (patients, appointments, doctors) does not contain any tables or columns related to invoices, payments, or their due dates.
+-- Therefore, it is not possible to identify or list patients with "overdue invoices" using the current schema.
+SELECT
+  p.id,
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone
+FROM
+  patients AS p
+WHERE
+  1 = 0; -- This condition ensures no rows are returned, as the requested information is unavailable in the schema.
+[ 2026-04-11 15:25:40,072 ] 62 src.pipeline.chat_pipeline - ERROR - Custom Error: Only SELECT queries are allowed.
+[ 2026-04-11 15:25:56,071 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Compare revenue between departments
+[ 2026-04-11 15:25:58,008 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: The provided database schema does not contain any information related to revenue (e.g., cost of appointments, billing details, service prices). Therefore, it is not possible to compare revenue between departments using the current tables.
+[ 2026-04-11 15:26:14,895 ] 29 src.pipeline.chat_pipeline - INFO - Received question: Show patient registration trend by month
+[ 2026-04-11 15:26:16,467 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  strftime('%Y-%m', registered_date) AS registration_month,
+  COUNT(id) AS patient_count
+FROM patients
+GROUP BY
+  registration_month
+ORDER BY
+  registration_month;
+```
+[ 2026-04-11 15:26:16,469 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  strftime('%Y-%m', registered_date) AS registration_month,
+  COUNT(id) AS patient_count
+FROM patients
+GROUP BY
+  registration_month
+ORDER BY
+  registration_month;
+[ 2026-04-11 15:26:16,470 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:26:16,471 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 15:26:16,471 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  strftime('%Y-%m', registered_date) AS registration_month,
+  COUNT(id) AS patient_count
+FROM patients
+GROUP BY
+  registration_month
+ORDER BY
+  registration_month;
+[ 2026-04-11 15:26:16,480 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 13 rows.
+[ 2026-04-11 15:26:55,770 ] 29 src.pipeline.chat_pipeline - INFO - Received question: exit
+[ 2026-04-11 15:26:58,096 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+
+```
+[ 2026-04-11 15:26:58,097 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: 
+[ 2026-04-11 15:26:58,098 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 15:26:58,098 ] 32 src.components.sql_validator - WARNING - Validation failed: Only SELECT queries are allowed. | Query: 
+[ 2026-04-11 15:26:58,099 ] 62 src.pipeline.chat_pipeline - ERROR - Custom Error: Only SELECT queries are allowed.
