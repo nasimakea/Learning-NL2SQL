@@ -1,0 +1,50 @@
+[ 2026-04-12 18:20:04,490 ] 16 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-12 18:20:04,491 ] 119 src.components.ai_agent - INFO - Using custom Gemini SQL Agent
+[ 2026-04-12 18:20:04,491 ] 10 src.components.ai_agent - INFO - Initializing Gemini model...
+[ 2026-04-12 18:20:04,493 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-12 18:20:04,493 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-12 18:20:04,494 ] 9 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-12 18:20:04,494 ] 21 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-12 18:20:20,664 ] 30 src.pipeline.chat_pipeline - INFO - Received question: give revenue of each doctor
+[ 2026-04-12 18:20:23,292 ] 34 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  d.name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.name
+ORDER BY
+  total_revenue DESC;
+```
+[ 2026-04-12 18:20:23,293 ] 41 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  d.name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.name
+ORDER BY
+  total_revenue DESC;
+[ 2026-04-12 18:20:23,294 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-12 18:20:23,294 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-12 18:20:23,294 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  d.name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.name
+ORDER BY
+  total_revenue DESC;
+[ 2026-04-12 18:20:23,308 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 15 rows.
+[ 2026-04-12 18:20:23,315 ] 21 src.components.chart_generator - INFO - Columns detected: ['name', 'total_revenue']

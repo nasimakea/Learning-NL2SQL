@@ -21,18 +21,14 @@ APPOINTMENT_STATUS = ["Scheduled", "Completed", "Cancelled", "No-Show"]
 INVOICE_STATUS = ["Paid", "Pending", "Overdue"]
 
 
-# -----------------------------
-# Helpers
-# -----------------------------
+
 
 def random_date_within_last_year():
     days_ago = random.randint(0, 365)
     return datetime.now() - timedelta(days=days_ago)
 
 
-# -----------------------------
-# Insert Doctors
-# -----------------------------
+
 
 def insert_doctors(conn):
     cursor = conn.cursor()
@@ -55,9 +51,7 @@ def insert_doctors(conn):
     return len(doctors)
 
 
-# -----------------------------
-# Insert Patients
-# -----------------------------
+
 
 def insert_patients(conn):
     cursor = conn.cursor()
@@ -86,9 +80,7 @@ def insert_patients(conn):
     return len(patients)
 
 
-# -----------------------------
-# Insert Appointments
-# -----------------------------
+
 
 def insert_appointments(conn):
     cursor = conn.cursor()
@@ -118,9 +110,7 @@ def insert_appointments(conn):
     return len(appointments)
 
 
-# -----------------------------
-# Insert Treatments
-# -----------------------------
+
 
 def insert_treatments(conn):
     cursor = conn.cursor()
@@ -152,9 +142,7 @@ def insert_treatments(conn):
     return len(treatments)
 
 
-# -----------------------------
-# Insert Invoices
-# -----------------------------
+
 
 def insert_invoices(conn):
     cursor = conn.cursor()
@@ -189,9 +177,7 @@ def insert_invoices(conn):
     return len(invoices)
 
 
-# -----------------------------
-# Main Seeder
-# -----------------------------
+
 
 def seed_database():
     with get_db_connection() as conn:
@@ -205,11 +191,11 @@ def seed_database():
 
         conn.commit()
 
-        print(f"✅ Created {doctors} doctors")
-        print(f"✅ Created {patients} patients")
-        print(f"✅ Created {appointments} appointments")
-        print(f"✅ Created {treatments} treatments")
-        print(f"✅ Created {invoices} invoices")
+        print(f"Created {doctors} doctors")
+        print(f"Created {patients} patients")
+        print(f"Created {appointments} appointments")
+        print(f"Created {treatments} treatments")
+        print(f"Created {invoices} invoices")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,142 @@
+[ 2026-04-11 23:09:30,839 ] 15 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-11 23:09:30,840 ] 117 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-11 23:09:30,841 ] 10 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-11 23:09:30,842 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-11 23:09:30,843 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-11 23:09:30,844 ] 11 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-11 23:09:30,845 ] 20 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-11 23:10:17,526 ] 29 src.pipeline.chat_pipeline - INFO - Received question: tell me about the patient and their disease who has paid more money and are in top 10
+[ 2026-04-11 23:10:28,039 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+WITH TopPayingPatients AS (
+    SELECT
+        p.id AS patient_id,
+        p.first_name,
+        p.last_name,
+        SUM(i.paid_amount) AS total_paid_amount
+    FROM patients p
+    JOIN invoices i ON p.id = i.patient_id
+    GROUP BY p.id, p.first_name, p.last_name
+    ORDER BY total_paid_amount DESC
+    LIMIT 10
+)
+SELECT
+    tpp.first_name,
+    tpp.last_name,
+    tpp.total_paid_amount,
+    GROUP_CONCAT(DISTINCT tr.treatment_name, '; ') AS received_treatments
+FROM TopPayingPatients tpp
+LEFT JOIN appointments a ON tpp.patient_id = a.patient_id
+LEFT JOIN treatments tr ON a.id = tr.appointment_id
+GROUP BY
+    tpp.patient_id,
+    tpp.first_name,
+    tpp.last_name,
+    tpp.total_paid_amount
+ORDER BY
+    tpp.total_paid_amount DESC;
+```
+[ 2026-04-11 23:10:28,040 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: WITH TopPayingPatients AS (
+    SELECT
+        p.id AS patient_id,
+        p.first_name,
+        p.last_name,
+        SUM(i.paid_amount) AS total_paid_amount
+    FROM patients p
+    JOIN invoices i ON p.id = i.patient_id
+    GROUP BY p.id, p.first_name, p.last_name
+    ORDER BY total_paid_amount DESC
+    LIMIT 10
+)
+SELECT
+    tpp.first_name,
+    tpp.last_name,
+    tpp.total_paid_amount,
+    GROUP_CONCAT(DISTINCT tr.treatment_name, '; ') AS received_treatments
+FROM TopPayingPatients tpp
+LEFT JOIN appointments a ON tpp.patient_id = a.patient_id
+LEFT JOIN treatments tr ON a.id = tr.appointment_id
+GROUP BY
+    tpp.patient_id,
+    tpp.first_name,
+    tpp.last_name,
+    tpp.total_paid_amount
+ORDER BY
+    tpp.total_paid_amount DESC;
+[ 2026-04-11 23:10:28,041 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:10:28,041 ] 32 src.components.sql_validator - WARNING - Validation failed: Only SELECT queries are allowed. | Query: WITH TopPayingPatients AS (
+    SELECT
+        p.id AS patient_id,
+        p.first_name,
+        p.last_name,
+        SUM(i.paid_amount) AS total_paid_amount
+    FROM patients p
+    JOIN invoices i ON p.id = i.patient_id
+    GROUP BY p.id, p.first_name, p.last_name
+    ORDER BY total_paid_amount DESC
+    LIMIT 10
+)
+SELECT
+    tpp.first_name,
+    tpp.last_name,
+    tpp.total_paid_amount,
+    GROUP_CONCAT(DISTINCT tr.treatment_name, '; ') AS received_treatments
+FROM TopPayingPatients tpp
+LEFT JOIN appointments a ON tpp.patient_id = a.patient_id
+LEFT JOIN treatments tr ON a.id = tr.appointment_id
+GROUP BY
+    tpp.patient_id,
+    tpp.first_name,
+    tpp.last_name,
+    tpp.total_paid_amount
+ORDER BY
+    tpp.total_paid_amount DESC;
+[ 2026-04-11 23:10:28,042 ] 62 src.pipeline.chat_pipeline - ERROR - Custom Error: Only SELECT queries are allowed.
+[ 2026-04-11 23:11:14,410 ] 29 src.pipeline.chat_pipeline - INFO - Received question: find me the  top 10 patient who has paid the most and money 
+[ 2026-04-11 23:11:16,388 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.paid_amount) AS total_paid_amount
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_paid_amount DESC
+LIMIT 10;
+```
+[ 2026-04-11 23:11:16,389 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.paid_amount) AS total_paid_amount
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_paid_amount DESC
+LIMIT 10;
+[ 2026-04-11 23:11:16,389 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:11:16,390 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:11:16,391 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.paid_amount) AS total_paid_amount
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_paid_amount DESC
+LIMIT 10;
+[ 2026-04-11 23:11:16,403 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 10 rows.
+[ 2026-04-11 23:11:16,413 ] 35 src.components.chart_generator - INFO - Not enough columns for chart

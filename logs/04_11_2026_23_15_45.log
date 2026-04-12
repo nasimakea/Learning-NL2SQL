@@ -1,0 +1,131 @@
+[ 2026-04-11 23:15:49,675 ] 15 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-11 23:15:49,676 ] 117 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-11 23:15:49,677 ] 10 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-11 23:15:49,677 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-11 23:15:49,678 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-11 23:15:49,678 ] 9 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-11 23:15:49,679 ] 20 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-11 23:16:09,875 ] 29 src.pipeline.chat_pipeline - INFO - Received question: tell me the revenue of each month
+[ 2026-04-11 23:16:12,842 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  strftime('%Y-%m', i.invoice_date) AS sales_month,
+  SUM(i.total_amount) AS monthly_revenue
+FROM invoices AS i
+GROUP BY
+  sales_month
+ORDER BY
+  sales_month;
+```
+[ 2026-04-11 23:16:12,843 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  strftime('%Y-%m', i.invoice_date) AS sales_month,
+  SUM(i.total_amount) AS monthly_revenue
+FROM invoices AS i
+GROUP BY
+  sales_month
+ORDER BY
+  sales_month;
+[ 2026-04-11 23:16:12,843 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:16:12,845 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:16:12,845 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  strftime('%Y-%m', i.invoice_date) AS sales_month,
+  SUM(i.total_amount) AS monthly_revenue
+FROM invoices AS i
+GROUP BY
+  sales_month
+ORDER BY
+  sales_month;
+[ 2026-04-11 23:16:12,850 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 13 rows.
+[ 2026-04-11 23:16:12,851 ] 21 src.components.chart_generator - INFO - Columns detected: ['sales_month', 'monthly_revenue']
+[ 2026-04-11 23:17:17,435 ] 29 src.pipeline.chat_pipeline - INFO - Received question: tell me revenue customer who are top 5 contributor of the revenue
+[ 2026-04-11 23:17:19,709 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.total_amount) AS total_revenue
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_revenue DESC
+LIMIT 5;
+```
+[ 2026-04-11 23:17:19,711 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.total_amount) AS total_revenue
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_revenue DESC
+LIMIT 5;
+[ 2026-04-11 23:17:19,711 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:17:19,712 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:17:19,712 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.total_amount) AS total_revenue
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_revenue DESC
+LIMIT 5;
+[ 2026-04-11 23:17:19,715 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 5 rows.
+[ 2026-04-11 23:17:19,716 ] 21 src.components.chart_generator - INFO - Columns detected: ['first_name', 'last_name', 'total_revenue']
+[ 2026-04-11 23:17:19,717 ] 60 src.components.chart_generator - INFO - No suitable numeric columns found
+[ 2026-04-11 23:17:53,545 ] 29 src.pipeline.chat_pipeline - INFO - Received question: find revenue by each docotor
+[ 2026-04-11 23:17:55,391 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  d.name AS doctor_name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.name
+ORDER BY
+  total_revenue DESC;
+```
+[ 2026-04-11 23:17:55,392 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  d.name AS doctor_name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.name
+ORDER BY
+  total_revenue DESC;
+[ 2026-04-11 23:17:55,392 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:17:55,393 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:17:55,393 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  d.name AS doctor_name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.name
+ORDER BY
+  total_revenue DESC;
+[ 2026-04-11 23:17:55,401 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 15 rows.
+[ 2026-04-11 23:17:55,403 ] 21 src.components.chart_generator - INFO - Columns detected: ['doctor_name', 'total_revenue']

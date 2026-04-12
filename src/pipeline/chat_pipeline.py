@@ -2,7 +2,8 @@ import re
 import sys
 from src.utils.logger import logging
 from src.utils.exception import CustomException
-from src.components.vanna_agent import get_vanna_agent
+
+from src.components.ai_agent import get_sql_agent
 from src.components.sql_validator import SQLValidator
 from src.components.query_executor import QueryExecutor
 from src.components.chart_generator import ChartGenerator
@@ -13,7 +14,7 @@ class ChatPipeline:
     def __init__(self):
         try:
             logger.info("Initializing ChatPipeline components...")
-            self.vn = get_vanna_agent()   # ✅ Vanna instance
+            self.vn = get_sql_agent()   
             self.validator = SQLValidator()
             self.executor = QueryExecutor()
             self.chart_generator = ChartGenerator()

@@ -1,0 +1,61 @@
+[ 2026-04-11 18:44:41,807 ] 15 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-11 18:44:41,808 ] 117 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-11 18:44:41,809 ] 10 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-11 18:44:41,810 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-11 18:44:41,810 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-11 18:44:41,811 ] 11 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-11 18:44:41,812 ] 20 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-11 18:45:03,648 ] 29 src.pipeline.chat_pipeline - INFO - Received question: tell me what money is not given to doctor by the patient
+[ 2026-04-11 18:45:06,951 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT SUM(i.total_amount - i.paid_amount) AS outstanding_amount
+FROM invoices i
+WHERE i.status != 'Paid' OR i.paid_amount < i.total_amount;
+```
+[ 2026-04-11 18:45:06,952 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT SUM(i.total_amount - i.paid_amount) AS outstanding_amount
+FROM invoices i
+WHERE i.status != 'Paid' OR i.paid_amount < i.total_amount;
+[ 2026-04-11 18:45:06,952 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 18:45:06,953 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 18:45:06,953 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT SUM(i.total_amount - i.paid_amount) AS outstanding_amount
+FROM invoices i
+WHERE i.status != 'Paid' OR i.paid_amount < i.total_amount;
+[ 2026-04-11 18:45:06,958 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 18:45:06,959 ] 35 src.components.chart_generator - INFO - Not enough columns for chart
+[ 2026-04-11 18:46:19,496 ] 29 src.pipeline.chat_pipeline - INFO - Received question: tell me what revenue coming from what places
+[ 2026-04-11 18:46:21,994 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT p.city, SUM(i.total_amount) AS total_revenue
+FROM invoices i
+JOIN patients p ON i.patient_id = p.id
+GROUP BY p.city
+ORDER BY total_revenue DESC;
+```
+[ 2026-04-11 18:46:21,995 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT p.city, SUM(i.total_amount) AS total_revenue
+FROM invoices i
+JOIN patients p ON i.patient_id = p.id
+GROUP BY p.city
+ORDER BY total_revenue DESC;
+[ 2026-04-11 18:46:21,995 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 18:46:21,995 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 18:46:21,996 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT p.city, SUM(i.total_amount) AS total_revenue
+FROM invoices i
+JOIN patients p ON i.patient_id = p.id
+GROUP BY p.city
+ORDER BY total_revenue DESC;
+[ 2026-04-11 18:46:21,997 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 10 rows.
+[ 2026-04-11 18:47:01,854 ] 29 src.pipeline.chat_pipeline - INFO - Received question: how can i increase the revenue
+[ 2026-04-11 18:47:03,528 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: I cannot generate a SQL query to "increase revenue" as this is a business strategy question, not a direct data retrieval or manipulation task solvable with a SQL query. SQL can help analyze data relevant to revenue, but not implement a strategy to increase it.
+[ 2026-04-11 18:47:42,591 ] 29 src.pipeline.chat_pipeline - INFO - Received question: tell me about the total patient coming from each places
+[ 2026-04-11 18:47:44,125 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT city, COUNT(id) AS total_patients
+FROM patients
+GROUP BY city;
+```
+[ 2026-04-11 18:47:44,125 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT city, COUNT(id) AS total_patients
+FROM patients
+GROUP BY city;
+[ 2026-04-11 18:47:44,126 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 18:47:44,127 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 18:47:44,127 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT city, COUNT(id) AS total_patients
+FROM patients
+GROUP BY city;
+[ 2026-04-11 18:47:44,129 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 10 rows.

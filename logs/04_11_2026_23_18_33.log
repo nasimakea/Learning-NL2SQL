@@ -1,0 +1,116 @@
+[ 2026-04-11 23:18:36,609 ] 15 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-11 23:18:36,610 ] 117 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-11 23:18:36,612 ] 10 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-11 23:18:36,612 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-11 23:18:36,613 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-11 23:18:36,614 ] 9 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-11 23:18:36,620 ] 20 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-11 23:19:45,760 ] 29 src.pipeline.chat_pipeline - INFO - Received question: find me revenue and email of each docotor
+[ 2026-04-11 23:19:50,336 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  d.name AS doctor_name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.id,
+  d.name;
+```
+[ 2026-04-11 23:19:50,337 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  d.name AS doctor_name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.id,
+  d.name;
+[ 2026-04-11 23:19:50,337 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:19:50,339 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:19:50,340 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  d.name AS doctor_name,
+  SUM(t.cost) AS total_revenue
+FROM doctors AS d
+JOIN appointments AS a
+  ON d.id = a.doctor_id
+JOIN treatments AS t
+  ON a.id = t.appointment_id
+GROUP BY
+  d.id,
+  d.name;
+[ 2026-04-11 23:19:50,342 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 15 rows.
+[ 2026-04-11 23:19:50,344 ] 21 src.components.chart_generator - INFO - Columns detected: ['doctor_name', 'total_revenue']
+[ 2026-04-11 23:20:23,297 ] 29 src.pipeline.chat_pipeline - INFO - Received question: find me number of doctors
+[ 2026-04-11 23:20:24,824 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT COUNT(*) FROM doctors;
+```
+[ 2026-04-11 23:20:24,825 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT COUNT(*) FROM doctors;
+[ 2026-04-11 23:20:24,826 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:20:24,826 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:20:24,826 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT COUNT(*) FROM doctors;
+[ 2026-04-11 23:20:24,829 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 1 rows.
+[ 2026-04-11 23:20:24,830 ] 21 src.components.chart_generator - INFO - Columns detected: ['COUNT(*)']
+[ 2026-04-11 23:21:12,624 ] 29 src.pipeline.chat_pipeline - INFO - Received question: fine me email of  patient and number who have not paid all money and also let me know the dues
+[ 2026-04-11 23:21:14,962 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone,
+  SUM(i.total_amount - i.paid_amount) AS total_dues
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+WHERE
+  i.total_amount > i.paid_amount
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone;
+```
+[ 2026-04-11 23:21:14,963 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone,
+  SUM(i.total_amount - i.paid_amount) AS total_dues
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+WHERE
+  i.total_amount > i.paid_amount
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone;
+[ 2026-04-11 23:21:14,963 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:21:14,964 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:21:14,965 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone,
+  SUM(i.total_amount - i.paid_amount) AS total_dues
+FROM patients AS p
+JOIN invoices AS i
+  ON p.id = i.patient_id
+WHERE
+  i.total_amount > i.paid_amount
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name,
+  p.email,
+  p.phone;
+[ 2026-04-11 23:21:14,967 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 96 rows.
+[ 2026-04-11 23:21:14,969 ] 21 src.components.chart_generator - INFO - Columns detected: ['first_name', 'last_name', 'email', 'phone', 'total_dues']
+[ 2026-04-11 23:21:14,970 ] 60 src.components.chart_generator - INFO - No suitable numeric columns found

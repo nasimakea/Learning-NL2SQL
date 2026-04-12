@@ -113,6 +113,8 @@ class SimpleSQLAgent:
         return response.text.strip()
 
 
-def get_vanna_agent():
-    logger.info("Using custom Gemini SQL Agent (No Vanna)")
+# ... (SimpleSQLAgent class remains the same)
+
+def get_sql_agent(): 
+    logger.info("Using custom Gemini SQL Agent")
     return SimpleSQLAgent()

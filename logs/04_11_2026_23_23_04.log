@@ -1,0 +1,73 @@
+[ 2026-04-11 23:23:07,236 ] 15 src.pipeline.chat_pipeline - INFO - Initializing ChatPipeline components...
+[ 2026-04-11 23:23:07,240 ] 117 src.components.vanna_agent - INFO - Using custom Gemini SQL Agent (No Vanna)
+[ 2026-04-11 23:23:07,242 ] 10 src.components.vanna_agent - INFO - Initializing Gemini model...
+[ 2026-04-11 23:23:07,245 ] 16 src.components.sql_validator - INFO - SQLValidator initialized with restricted keyword list.
+[ 2026-04-11 23:23:07,247 ] 11 src.components.query_executor - INFO - QueryExecutor initialized.
+[ 2026-04-11 23:23:07,251 ] 9 src.components.chart_generator - INFO - ChartGenerator initialized
+[ 2026-04-11 23:23:07,253 ] 20 src.pipeline.chat_pipeline - INFO - All components initialized.
+[ 2026-04-11 23:23:21,801 ] 29 src.pipeline.chat_pipeline - INFO - Received question: find me the revenue of each customer
+[ 2026-04-11 23:23:24,519 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.total_amount) AS total_revenue
+FROM patients AS p
+INNER JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_revenue DESC;
+```
+[ 2026-04-11 23:23:24,521 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.total_amount) AS total_revenue
+FROM patients AS p
+INNER JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_revenue DESC;
+[ 2026-04-11 23:23:24,521 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:23:24,522 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:23:24,522 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT
+  p.first_name,
+  p.last_name,
+  SUM(i.total_amount) AS total_revenue
+FROM patients AS p
+INNER JOIN invoices AS i
+  ON p.id = i.patient_id
+GROUP BY
+  p.id,
+  p.first_name,
+  p.last_name
+ORDER BY
+  total_revenue DESC;
+[ 2026-04-11 23:23:24,526 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 159 rows.
+[ 2026-04-11 23:23:24,528 ] 21 src.components.chart_generator - INFO - Columns detected: ['first_name', 'last_name', 'total_revenue']
+[ 2026-04-11 23:23:24,530 ] 60 src.components.chart_generator - INFO - No suitable numeric columns found
+[ 2026-04-11 23:23:47,824 ] 29 src.pipeline.chat_pipeline - INFO - Received question: find me the revenue of each customer and only first name
+[ 2026-04-11 23:23:49,821 ] 33 src.pipeline.chat_pipeline - INFO - Raw response: ```sql
+SELECT p.first_name, SUM(i.total_amount) AS total_revenue
+FROM patients p
+JOIN invoices i ON p.id = i.patient_id
+GROUP BY p.id, p.first_name;
+```
+[ 2026-04-11 23:23:49,821 ] 40 src.pipeline.chat_pipeline - INFO - Extracted SQL: SELECT p.first_name, SUM(i.total_amount) AS total_revenue
+FROM patients p
+JOIN invoices i ON p.id = i.patient_id
+GROUP BY p.id, p.first_name;
+[ 2026-04-11 23:23:49,821 ] 26 src.components.sql_validator - INFO - Starting SQL validation process...
+[ 2026-04-11 23:23:49,822 ] 48 src.components.sql_validator - INFO - SQL validation successful.
+[ 2026-04-11 23:23:49,823 ] 18 src.components.query_executor - INFO - Preparing to execute query: SELECT p.first_name, SUM(i.total_amount) AS total_revenue
+FROM patients p
+JOIN invoices i ON p.id = i.patient_id
+GROUP BY p.id, p.first_name;
+[ 2026-04-11 23:23:49,826 ] 34 src.components.query_executor - INFO - Query execution successful. Retrieved 159 rows.
+[ 2026-04-11 23:23:49,829 ] 21 src.components.chart_generator - INFO - Columns detected: ['first_name', 'total_revenue']
