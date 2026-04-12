@@ -1,7 +1,8 @@
-"# NL2SQL_PROJECT" 
-# 🧠 NL2SQL AI Agent (Custom Vanna-like System)
+# NL2SQL_PROJECT
 
-An advanced AI-powered system that converts natural language into SQL queries using Gemini and executes them on a database with built-in validation, memory, and visualization.
+# 🧠 NL2SQL AI Agent (Custom LLM-Based System)
+
+An advanced AI-powered system that converts natural language into SQL queries using Gemini and executes them on a database with built-in validation and visualization.
 
 ---
 
@@ -10,7 +11,6 @@ An advanced AI-powered system that converts natural language into SQL queries us
 * 💬 Natural Language → SQL (powered by Gemini)
 * 🛡️ SQL Validation (only safe queries allowed)
 * ⚙️ Query Execution Engine
-* 🧠 Query Memory (stores past interactions)
 * 📊 Chart Generation (data visualization)
 * 🧱 Modular Architecture (production-ready structure)
 * 🧪 Multiple Test Modules
@@ -25,13 +25,12 @@ An advanced AI-powered system that converts natural language into SQL queries us
 3. SQL Validator ensures safety
 4. Query Executor runs it on database
 5. Results are returned (table/chart)
-6. Query + SQL stored in memory
 
 ---
 
 ## 🏗️ Project Structure
 
-```id="projstruct"
+```
 nl2sql_project/
 │
 ├── app.py                      # Streamlit UI
@@ -52,10 +51,9 @@ nl2sql_project/
 │   │
 │   ├── components/
 │   │   ├── chart_generator.py  # Data visualization
-│   │   ├── memory.py           # Query memory storage
 │   │   ├── query_executor.py   # Executes SQL queries
 │   │   ├── sql_validator.py    # Validates SQL safety
-│   │   ├── vanna_agent.py      # Core NL2SQL agent logic
+│   │   ├── ai_agent.py         # Core NL2SQL agent logic
 │   │
 │   ├── pipeline/
 │   │   └── chat_pipeline.py    # End-to-end pipeline
@@ -69,10 +67,9 @@ nl2sql_project/
 │   ├── test_pipeline.py
 │   ├── test_query_executor.py
 │   ├── test_sql_validator.py
-│   ├── test_vanna.py
+│   ├── test_ai_agent.py
 │
 ├── clinic.db                   # SQLite database
-├── seed_memory.py              # Preload memory
 ├── setup_database.py           # Initialize DB
 │
 ├── requirements.txt
@@ -85,7 +82,7 @@ nl2sql_project/
 
 ## ⚙️ Installation
 
-```bash id="install"
+```bash
 git clone https://github.com/your-username/nl2sql_project.git
 cd nl2sql_project
 
@@ -101,7 +98,7 @@ pip install -r requirements.txt
 
 Create a `.env` file:
 
-```id="env"
+```
 GEMINI_API_KEY=your_api_key_here
 ```
 
@@ -111,13 +108,13 @@ GEMINI_API_KEY=your_api_key_here
 
 ### Run CLI
 
-```bash id="runcli"
+```bash
 python main.py
 ```
 
 ### Run Streamlit UI
 
-```bash id="runui"
+```bash
 streamlit run app.py
 ```
 
@@ -125,11 +122,11 @@ streamlit run app.py
 
 ## 🧪 Run Tests
 
-```bash id="tests"
-python test_pipeline.py
-python test_query_executor.py
-python test_sql_validator.py
-python test_vanna.py
+```bash
+python tests/test_pipeline.py
+python tests/test_query_executor.py
+python tests/test_sql_validator.py
+python tests/test_ai_agent.py
 ```
 
 ---
@@ -145,13 +142,13 @@ python test_vanna.py
 
 **Input:**
 
-```id="input"
+```
 Show total revenue by month
 ```
 
 **Generated SQL:**
 
-```sql id="sql"
+```sql
 SELECT month, SUM(revenue)
 FROM invoices
 GROUP BY month;
@@ -161,9 +158,9 @@ GROUP BY month;
 
 ## 🔥 Key Highlights
 
-* Custom-built **Vanna-like agent** (not using framework)
+* Custom-built **LLM-powered NL2SQL agent**
 * Modular, scalable architecture (industry-level)
-* Built-in validation + memory (advanced feature)
+* Built-in validation for safe query execution
 * Ready for production extension (API, deployment)
 
 ---
@@ -178,11 +175,7 @@ GROUP BY month;
 
 ---
 
-## 👨‍💻 Author
 
-Nasim
-
----
 
 ## ⭐ Support
 
